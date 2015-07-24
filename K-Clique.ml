@@ -2,7 +2,7 @@ let rec queueForCliqueFromAdjGraph graph k=
   match graph with
       []->[]
     | (x,adj)::rest-> 
-        if(List.length adj >= k) 
+        if(List.length adj >= k-1) 
         then(x,[])::(queueForCliqueFromAdjGraph rest k)
         else queueForCliqueFromAdjGraph rest k;;
 
@@ -18,7 +18,8 @@ let rec succNode graph n=
 let rec succNodeClique succ clique=
   match succ with
       []->[] 
-    | x::rest-> (x,clique)::(succNodeClique rest clique);;
+    | x::rest-> if(List.mem x clique) then (succNodeClique rest clique)
+        else (x,clique)::(succNodeClique rest clique);;
 
 
 
@@ -38,7 +39,7 @@ let clique graph k=
   in aux (queueForCliqueFromAdjGraph graph k) graph;;
 
 
-let graph = [(1,[2;3;5]); (5,[2;3;4;1;7]) ;(7,[5;2;3;4]); (2,[4;1;5;3;7]); (3,[2;4;1;5;7]); (4,[2;3;5;7]) ];;
+let graph = [(1,[2]); (2,[1]) ];;
 
-clique graph 5;;
+clique graph 2;;
 
